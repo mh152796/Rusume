@@ -1,0 +1,97 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<!-- cv template  -->
+
+{% if resume_cv.name %}
+
+<div class="container" >
+    <div class="row">
+        <div class="col-md-4 text-center py-5 background">
+            <!-- first col  -->
+            {% if resume_cv.image.url is not null %}
+            <img src="{{resume_cv.image.url}}" alt="profile-img" class="img-fluid myimg">
+            {% else %}
+            <img src="{{resume_cv.profiles.image.url}}" alt="profile-icon.png" class="img-fluid myimg">
+            {% endif %}
+            <div class="container">
+                <p>{{resume_cv.name}}</p>
+                <p>+088 {{resume_cv.phone}}</p>
+                <p>{{resume_cv.address}}</p>
+                <hr>
+                <p><a href="{{form.social_facebook}}">{{resume_cv.social_facebook}}</a></p>
+                <p><a href="{{resume_cv.social_instagram}}">{{resume_cv.social_instagram}}</a></p>
+                <p><a href="{{resume_cv.social_linkedin}}">{{resume_cv.social_linkedin}}</a></p>
+            </div>
+        </div>
+        <div class="col-md-8 py-5">
+            <!-- second col  -->
+            <h1 class="text-center" style="font-weight: 980;">{{resume_cv.name}}</h1>
+            <!-- objective card  -->
+
+           <div class="card mt-4">
+            <div class="card-header background">
+                <h3>Objective</h3>
+            </div>
+            <div class="card-body">
+                <p >{{resume_cv.objective}}</p>
+                
+            </div>
+           </div>
+
+           <!-- work experience  -->
+
+           <div class="card mt-4">
+            <div class="card-header background">
+                <h3>Work Experience</h3>
+            </div>
+            
+            <div class="card-body">
+              <ul>
+            
+                  {%  for line in resume_cv.work_experience.splitlines %}
+                  <li>{{line.strip}}</li>
+                  
+                  {% endfor %}
+                  
+              </ul>
+                
+            </div>
+           </div>
+           
+
+           <!-- academic qualification  -->
+
+           <div class="card mt-4">
+            <div class="card-header background">
+                <h3>Academic Qualification</h3>
+            </div>
+            <div class="card-body">
+              <ul >
+                {%  for line in resume_cv.edu_qualification.splitlines %}
+                <li>{{line.strip}}</li>
+                
+                {% endfor %}
+                  
+              </ul>
+                
+            </div>
+           </div>
+           
+           <div class="container mt-3 text-center">
+               <button onclick="window.print()" type="submit" class="btn background">
+                   Print CV
+               </button>
+
+           </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+   
+
+

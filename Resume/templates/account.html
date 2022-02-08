@@ -1,0 +1,87 @@
+{% extends 'acc.html' %}
+
+{% block content %}
+
+ <!-- Main Section -->
+ <main class="settingsPage profile my-md">
+  <div class="container">
+    <div class="layout">
+      <div class="column column--1of3">
+        <div class="card text-center">
+          <div class="card__body dev">
+            <a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-account' %}"><i class="im im-edit"></i> Edit</a>
+            <img class="avatar avatar--xl dev__avatar" src="{{ profile.image.url }}" />
+            <h2 class="dev__name">{{profile.name}}</h2>
+            <p class="dev__title">{{profile.short_intro}}</p>
+            <p class="dev__location">Based in {{profile.location}}</p>
+
+            <ul class="dev__social">
+              {% if profile.social_facebook %}
+              <li>
+                <a title="Github" href="{{profile.social_facebook}}" target="_blank"><i class="im im-facebook"></i></a>
+              </li>
+              {% endif %}
+
+
+              {% if profile.social_instagram %}
+              <li>
+                <a title="Twitter" href="{{profile.social_instagram}}" target="_blank"><i class="im im-instagram"></i></a>
+              </li>
+              {% endif %}
+
+              {% if profile.social_linkedin %}
+              <li>
+                <a title="LinkedIn" href="{{profile.social_linkedin}}" target="_blank"><i
+                    class="im im-linkedin"></i></a>
+              </li>
+              {% endif %}
+
+              {% if profile.social_website %}
+              <li>
+                <a title="Personal Website" href="{{profile.social_website}}" target="_blank"><i
+                    class="im im-globe"></i></a>
+              </li>
+              {% endif %}
+
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="column column--2of3">
+
+        <div class="settings">
+          <h3 class="settings__title">{{profile.username}}'s CV</h3>
+          <a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'cv_creation' %}"><i class="im im-plus"></i> Add CV</a>
+        </div>
+
+        <table class="settings__table">
+          
+          {% for cv in cv %}
+
+          <tr>
+            <td class="settings__thumbnail">
+              {% if cv.image %}
+                <a href="single-project.html"><img src="{{cv.image.url}}" alt="Project Thumbnail" /></a>
+              {% else %}
+              <a href="single-project.html"><img src="{{profile.image.url}}" alt="Project Thumbnail" /></a>
+              {% endif %}
+            </td>
+            <td class="settings__tableInfo">
+              <a href="single-project.html">{{cv.name}}</a>
+              <p>{{cv.objective|slice:"60"}}</p>
+            </td>  
+            <td class="settings__tableActions">
+              <a class="tag tag--pill tag--main settings__btn" href="{% url 'cv_view' cv.id %}"><i class="im im-edit"></i> View</a>
+              <a class="tag tag--pill tag--main settings__btn" href="{% url 'delete-cv' cv.id %}"><i class="im im-x-mark-circle-o"></i>
+                Delete</a>
+            </td>
+          </tr>
+
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}

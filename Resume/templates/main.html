@@ -1,0 +1,83 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="container" id="cv-form">
+    <h1 class="text-center my-2"> Resume Generator</h1>
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+    <div class="row">
+        
+            <div class="col-md-6 mt-4">
+                <!-- first col  -->
+                <h3>Personal Information</h3>
+                <div class="form-group">
+                    <label for="namefield" >Your Name</label>
+                    {{form.name}}
+                </div>
+    
+                <div class="form-group mt-2">
+                    <label for="contactfield" >Your Phone Number</label>
+                    {{form.phone}}
+                </div>
+    
+                <div class="form-group mt-2">
+                    <label for="addressfield" >Your Address</label>
+                    {{form.address}}
+                    <!-- <textarea id="addressfield" placeholder="Enter Hare" class="form-control" rows="5"></textarea> -->
+                </div>
+    
+    
+                <p class="text-secondary my-3">Important Links</p>
+    
+                <div class="form-group mt-2">
+                    <label for="fbfield" >Facebook Link</label>
+                    {{form.social_facebook}}
+                </div>
+                <div class="form-group mt-2">
+                    <label for="instafield" >Instagram Link</label>
+                    {{form.social_instagram}}
+                </div>
+                <div class="form-group mt-2">
+                    <label for="linkedfield" >Linkdin Link</label>
+                    {{form.social_linkedin}}
+                </div>
+                <div class="form-group mt-2">
+                    <label for="linkedfield" >Upload Photo</label>
+                    {{form.image}}
+                </div>
+            </div>
+            <div class="col-md-6 mt-4">
+                <!-- second col  -->
+                <h3>Professional Information</h3>
+    
+                <div class="form-group mt-2">
+                    <label for="" >Objective</label>
+                    {{form.objective}}
+                </div>
+    
+                <div class="form-group mt-2" id="we">
+                    <label for="" >Work Experience</label>
+                    {{form.work_experience}}
+                </div>
+    
+    
+    
+                <div class="form-group mt-2" id="aq">
+                    <label for="" >Academic Qualification</label>
+                    {{form.edu_qualification}}
+                    <!-- <textarea  placeholder="Enter Hare" class="form-control eqfield" rows="3"></textarea> -->
+                </div>
+            </div>
+            <div class="container text-center mt-3">
+                <button type="submit" class="btn btn-primary btn-lg" >Generate CV</button>
+            </div>
+    </div>
+</form>
+    
+</div>
+
+{% endblock %}
+
+
+   
+
+
