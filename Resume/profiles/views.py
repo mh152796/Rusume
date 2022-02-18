@@ -1,15 +1,29 @@
+from tkinter.messagebox import NO
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model, login, logout, authenticate
 User = get_user_model()
 from django.contrib import messages
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 from .form import CustomUserCreationForm, ProfileForm
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 # Create your views here.
 
 
 def registerUser(request):
     page = 'register'    
+    # initials = {
+    #     'username': "username",
+    #     'email' : 'xyz@gmail',
+    #      'password1':'000000',
+    #      'password2': '000000'
+        
+    # }
     form =  CustomUserCreationForm()
     
     if request.method =='POST':        
@@ -17,16 +31,42 @@ def registerUser(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
+            user.is_active = False
             user.save()
-            messages.success(request, 'User Account was created!')
-            login(request, user)
-            return redirect('edit-account')
+            messages.success(request, 'Please Check the mail and confirm your account')
+            current_site = get_current_site(request)
+            mail_subject='Activate Your Account'
+            message= render_to_string('send_mail.html', {
+                'user':user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+            send_mail = user.email
+            email = EmailMessage(mail_subject, message, to=[send_mail])
+            email.send()
+            return redirect('home')
         else:
           messages.success(request, 'An error has occurred during registration')
 
-            
     context = {'page':page, 'form':form}
     return render(request, 'login_register.html', context)
+        
+def activate(request, uidb64, token):
+    try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = User._default_manager.get(pk=uid)
+    except(TypeError,ValueError,OverflowError,User.DoesNotExist):
+            user=None
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, 'Your account has created!')
+        login(request, user)
+        return redirect('edit-account')
+    else:
+        messages.warning(request, "Activation link invalid!")
+        
 
 @login_required(login_url='login')
 def userAccount(request):
